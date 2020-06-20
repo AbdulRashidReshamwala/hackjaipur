@@ -6,6 +6,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import CallEndSharpIcon from '@material-ui/icons/CallEndSharp';
+import CallSharpIcon from '@material-ui/icons/CallSharp';
 
 const mediaStreamConstraints = {
   video: true,
@@ -66,7 +69,7 @@ const CreatePage = () => {
       <Container maxWidth="lg" style={ { marginTop: '7rem',textAlign:'center' } }>
           {console.log(roomId)}
         { roomId ? (<Typography color='textSecondary' variant="h4">RoomID : { roomId } </Typography>) : (<></>) }
-        <Button variant="contained" size="large" onClick={ getUserMedia } color="primary">
+        <Button startIcon={<VideocamIcon/>} variant="contained" size="large" onClick={ getUserMedia } color="primary">
           Start Video
         </Button>
           <br/>
@@ -76,10 +79,10 @@ const CreatePage = () => {
           { roomCreated ? (<></>) : (<Button onClick={ createOffer } size="large" variant="contained" color="primary">
             Create Room
           </Button>)}
-          <Button id="callButton" variant="contained" size="large" color="primary">
+          <Button startIcon={<CallSharpIcon/>} id="callButton" variant="contained" size="large" color="primary">
             Call
         </Button>
-          <Button id="hangupButton" variant="contained" size="large" color="secondary">
+          <Button endIcon={<CallEndSharpIcon/>} id="hangupButton" variant="contained" size="large" color="secondary">
             Hang
         </Button>
       </div>
