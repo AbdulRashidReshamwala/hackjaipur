@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controller</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <h1>HackJaipur Data Collection utility for training model</h1>
+        <h1>Team reactive Error</h1>
+        <div class="jumbotron">
+            <h3>Attention count : <span id='a-count'></span></h3>
+            <h3>Distracted count : <span id='d-count'></span></h3>
+            <video autoplay="true" id="videoElement"></video>
+            <br />
+            <button id="attn" class="btn btn-success btn-block">Add Attention Class</button>
+            <button id="dist" class="btn btn-success btn-block">Add Distracted Class</button>
+            <button id="compile" class="btn btn-primary btn-block">Compile Model</button>
+            <button id="show" class="btn btn-primary btn-block">Show Model Summary</button>
+            <button id="train" class="btn btn-primary btn-block">Train Model </button>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis@1.4.3/dist/tfjs-vis.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/facemesh"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+
+    <script>
+        let totalx = []
+        let totaly = []
+        let a_count = 0
+        let d_count = 0
+        tfvis.visor().close()
+        var video = document.querySelector("#videoElement");
+        let model
+        const custom_model = tf.sequential();
+        facemesh.load().then((m) => {
+            model = m
+            alert('loaded')
+        });
+        async function main(i) {
+            const predictions = await model.estimateFaces(
+                document.querySelector("#videoElement"), false, true
+            );
+            console.log(i);
+
+            const cur_x = await tf.tensor(predictions[0].mesh).flatten().data()
+            const cur_y = i == 'attn' ? [1, 0] : [0, 1]
+            totalx.push(cur_x)
+            totaly.push(cur_y)
+            if (i === 'attn') {
+                a_count += 1
+                document.querySelector("#a-count").innerHTML = a_count
+            }
+            else {
+
+                d_count += 1
+                document.querySelector("#d-count").innerHTML = d_count
+            }
+        }
+
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    video.srcObject = stream;
+                })
+                .catch(function (err0r) {
+                    console.log("Something went wrong!");
+                });
+        }
+        $('#attn').click(() => {
+            main('attn')
+        })
+        $('#dist').click(() => {
+            main('diss')
+
+        })
+
+        $('#show').click(() => {
+            console.log(tfvis.visor().isOpen);
+
+            tfvis.visor().isOpen() ? tfvis.visor().close() : tfvis.visor().open();
+
+        })
+        $('#train').click(async () => {
+            const x_tensor = tf.tensor(totalx)
+            const y_tensor = tf.tensor(totaly)
+            await custom_model.fit(x_tensor, y_tensor, {
+                batchSize: 4,
+                epochs: 10,
+                callbacks: tfvis.show.fitCallbacks(
+                    { name: "Fit Callbacks", tab: "Training" },
+                    ["loss", "acc"]
+                )
+            });
+            tfvis.show.modelSummary(
+                { name: "Model Summary", tab: "Model Inspection" },
+                model
+            );
+            custom_model.save(
+                `downloads://attention-inference-${Math.floor(new Date().getTime() / 1000)}`
+            );
+        })
+        $('#compile').click(() => {
+            custom_model.add(tf.layers.dense({ units: 1024, inputShape: [1404] }))
+            custom_model.add(tf.layers.dense({ units: 1024, activation: 'relu' }))
+            custom_model.add(tf.layers.dropout(0.3))
+            custom_model.add(tf.layers.dense({ units: 512, activation: 'relu' }))
+            custom_model.add(tf.layers.dropout(0.3))
+            custom_model.add(tf.layers.dense({ units: 512, activation: 'relu' }))
+            custom_model.add(tf.layers.dropout(0.3))
+            custom_model.add(tf.layers.dense({ units: 256, activation: 'relu' }))
+            custom_model.add(tf.layers.dropout(0.3))
+            custom_model.add(tf.layers.dense({ units: 256, activation: 'relu' }))
+            custom_model.add(tf.layers.dropout(0.3))
+            custom_model.add(tf.layers.dense({ units: 128, activation: 'relu' }))
+            custom_model.add(tf.layers.dropout(0.3))
+            custom_model.add(tf.layers.dense({ units: 128, activation: 'relu' }))
+            custom_model.add(tf.layers.dense({ units: 2, activation: 'softmax' }))
+            custom_model.compile({
+                optimizer: 'adam',
+                loss: 'meanSquaredError',
+                metrics: ["accuracy"]
+            })
+            tfvis.visor();
+            tfvis.show.modelSummary(
+                { name: "Model Summary", tab: "Model Inspection" },
+                custom_model
+            );
+        })
+
+    </script>
+</body>
+
+</html>
