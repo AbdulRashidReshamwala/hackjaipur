@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+const firebase = require("firebase");
 
 export default function CallPage() {
+  let history = useHistory();
+
+  useEffect(() => {
+    //check for user loogged in state
+    firebase.auth().onAuthStateChanged(async (_user) => {
+      if (!_user) {
+        history.push("/");
+      }
+    });
+  }, []);
   return <div>hello</div>;
   //   const getUserMedia = async () => {
   //     try {
