@@ -5,13 +5,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import { Redirect } from 'react-router-dom';
 //import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    color: 'white',
     flexGrow: 1,
   },
   menuButton: {
+    color: 'white',
     marginRight: theme.spacing(2),
   },
   title: {
@@ -24,14 +27,15 @@ export default function Navbar() {
 
   return (
     <div className={ classes.root }>
-      <AppBar position="fixed">
+      <AppBar color="primary" position="fixed">
         <Toolbar>
           <IconButton edge="start" className={ classes.menuButton } color="inherit" aria-label="menu">
           </IconButton>
-          <Typography variant="h6" className={ classes.title }>
+          <Typography style={{cursor:"pointer"}} onClick={ () => (
+            <Redirect to="/" />
+          )} variant="h6" className={ classes.title }>
             Dhoom
           </Typography>
-          <Button color="inherit">Login</Button>
             <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
