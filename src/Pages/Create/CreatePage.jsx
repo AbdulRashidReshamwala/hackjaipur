@@ -73,8 +73,10 @@ const CreatePage = () => {
           Start Video
         </Button>
           <br/>
+        <div className="video">
           <video id="my-stream" autoPlay playsInline></video>
           <video id="remoteVideo" autoPlay playsInline></video>
+          </div>
         <div className={ classes.root }>
           { roomCreated ? (<></>) : (<Button onClick={ createOffer } size="large" variant="contained" color="primary">
             Create Room

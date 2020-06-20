@@ -1,15 +1,7 @@
 body {
   height: 100vh;
-  background-image: linear-gradient(
-    to right top,
-    #051937,
-    #004d7a,
-    #008793,
-    #00bf72,
-    #a8eb12
-  );
-  background-size: contain;
-  background-repeat: no-repeat;
+  width: auto;
+  background-color: aliceblue;
 }
 
 .landing-page {
@@ -26,7 +18,7 @@ body {
   background-color: black;
 }
 
-.caption {
-  padding-top: 33rem;
-  z-index: 2;
+.video {
+  margin-left: 17rem;
+  margin-top: 2rem;
 }
