@@ -58,11 +58,11 @@ const CreatePage = () => {
   const classes = useStyles();
 
 
-  const joinRoomById = async (roomId)=> {
+  const joinRoomById = async (roomId) => {
     const roomRef = await db.collection('rooms').doc(`${roomId}`).get()
-    console.log("This is roomID", roomId) 
+    console.log("This is roomID", roomId)
     console.log("Room Ref:", roomRef)
-   // const roomSnapshot = await roomRef.get()
+    // const roomSnapshot = await roomRef.get()
     console.log('Got room:', roomRef.exists)
 
     if (roomRef.exists) {
@@ -82,7 +82,7 @@ const CreatePage = () => {
       })
 
     }
-    }
+  }
 
   useEffect(() => {
     let c = new RTCPeerConnection(configuration);
@@ -108,7 +108,7 @@ const CreatePage = () => {
   };
 
   const handleRoomChange = (e) => {
-   console.log(e.target.value)
+    console.log(e.target.value)
     setRoomById(e.target.value)
   }
 
@@ -131,37 +131,37 @@ const CreatePage = () => {
   };
   return (
     <div >
-      <Container maxWidth="lg" style={ { marginTop: '7rem',textAlign:'center' } }>
+      <Container maxWidth="lg" style={ { marginTop: '7rem', textAlign: 'center' } }>
         { roomId ? (<Typography color='textSecondary' variant="h4">RoomID : { roomId } </Typography>) : (<></>) }
-        <Button startIcon={<VideocamIcon/>} variant="contained" size="large" onClick={ getUserMedia } color="primary">
+        <Button startIcon={ <VideocamIcon /> } variant="contained" size="large" onClick={ getUserMedia } color="primary">
           Start Video
         </Button>
-          <br/>
+        <br />
         <div className="video">
           <video id="my-stream" autoPlay playsInline></video>
           <video id="remoteVideo" autoPlay playsInline></video>
-          </div>
+        </div>
         <div className={ classes.root }>
           { roomCreated ? (<></>) : (<Button onClick={ createOffer } size="large" variant="contained" color="primary">
             Create Room
-          </Button>)}
-          <Button startIcon={<CallSharpIcon/>} id="callButton" variant="contained" size="large" color="primary">
+          </Button>) }
+          <Button startIcon={ <CallSharpIcon /> } id="callButton" variant="contained" size="large" color="primary">
             Call
         </Button>
-          
-          <Button endIcon={<CallEndSharpIcon/>} id="hangupButton" variant="contained" size="large" color="secondary">
+
+          <Button endIcon={ <CallEndSharpIcon /> } id="hangupButton" variant="contained" size="large" color="secondary">
             Hang
         </Button>
           <br />
           <TextField id="standard-basic" label="Enter Room ID" onChange={ (e) => {
             handleRoomChange(e)
-          }} />
+          } } />
           <Button onClick={ () => {
             joinRoomById(roomById)
           } } id="callButton" variant="contained" size="large" color="primary">
             Join Room
         </Button>
-      </div>
+        </div>
       </Container>
     </div>
   );
