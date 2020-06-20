@@ -1,3 +1,7 @@
+import * as firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/analytics";
+
 const firebaseConfig = {
   apiKey: "AIzaSyAfGZjND6kgA3Sx7G9OYhnLRFdwjeeWXPc",
   authDomain: "hackjaipur-95690.firebaseapp.com",
@@ -8,3 +12,8 @@ const firebaseConfig = {
   appId: "1:973190574578:web:ce4c8200f61d075381fb6b",
   measurementId: "G-MY0HQ9D1JD",
 };
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+firebase.analytics();
+export default db;
