@@ -1,0 +1,9 @@
+body {
+  height: 100%;
+}
+
+.landing-page {
+  background-image: url(../img/landing.jpg);
+  background-size: cover;
+  height: 100vh;
+}
