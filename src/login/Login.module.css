@@ -1,0 +1,13 @@
+.Container {
+  margin-top: 10rem;
+  width: 50%;
+  height: 50vh;
+  margin-left: 20%;
+  align-items: center;
+}
+.heading {
+  margin: 2rem;
+}
+.button {
+  margin: 5rem;
+}
