@@ -12,7 +12,7 @@ export default function CallPage() {
         history.push("/");
       }
     });
-  }, []);
+  }, [history]);
   return <div>hello</div>;
   //   const getUserMedia = async () => {
   //     try {
