@@ -5,6 +5,7 @@ import CreatePage from "./Pages/Create/CreatePage";
 import LandingPage from './Pages/LandingPage/LandingPage'
 import Navbar from "./Core/Navbar";
 import Login from "./AuthPages/Login";
+import Create2 from "./Pages/Create/Create2";
 
 
 function App() {
