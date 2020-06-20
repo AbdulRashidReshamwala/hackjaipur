@@ -98,7 +98,7 @@ const CreatePage = () => {
       );
       document.querySelector("#my-stream").srcObject = ms;
       localStream = ms
-      remoteStream = new MediaStream()
+      remoteStream =MediaStream()
       console.log(remoteStream)
       document.querySelector('#remoteVideo').srcObject = remoteStream
       console.log('Stream:', document.querySelector('#localVideo').srcObject)
