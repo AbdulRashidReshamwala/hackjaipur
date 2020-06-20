@@ -1,5 +1,7 @@
 body {
-  height: 100%;
+  height: 100vh;
+  width: auto;
+  background-color: aliceblue;
 }
 
 .landing-page {
@@ -16,7 +18,7 @@ body {
   background-color: black;
 }
 
-.caption {
-  padding-top: 33rem;
-  z-index: 2;
+.video {
+  margin-left: 17rem;
+  margin-top: 2rem;
 }
